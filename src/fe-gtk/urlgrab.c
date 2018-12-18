@@ -49,13 +49,22 @@ url_treeview_url_clicked_cb (GtkWidget *view, GdkEventButton *event,
 {
 	GtkTreeIter iter;
 	gchar *url;
+	GtkTreeSelection *sel;
+	GtkTreePath *path;
+	GtkTreeView *tree = GTK_TREE_VIEW (view);
 
-	if (!event ||
-	    !gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
-	                                    URL_COLUMN, &url, -1))
-	{
+	if (!event || !gtk_tree_view_get_path_at_pos (tree, event->x, event->y, &path, 0, 0, 0))
 		return FALSE;
-	}
+
+	/* select what they right-clicked on */
+	sel = gtk_tree_view_get_selection (tree); 
+	gtk_tree_selection_unselect_all (sel);
+	gtk_tree_selection_select_path (sel, path);
+	gtk_tree_path_free (path); 
+
+	if (!gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
+	                                    URL_COLUMN, &url, -1))
+		return FALSE;
 	
 	switch (event->button)
 	{
@@ -137,7 +146,7 @@ static void
 url_button_save (void)
 {
 	gtkutil_file_req (_("Select an output filename"),
-							url_save_callback, NULL, get_xdir (), NULL, FRF_WRITE|FRF_FILTERISINITIAL);
+							url_save_callback, NULL, NULL, NULL, FRF_WRITE);
 }
 
 void
@@ -178,6 +187,7 @@ void
 url_opengui ()
 {
 	GtkWidget *vbox, *hbox, *view;
+	char buf[128];
 
 	if (urlgrabberwindow)
 	{
@@ -185,9 +195,10 @@ url_opengui ()
 		return;
 	}
 
+	g_snprintf(buf, sizeof(buf), _("URL Grabber - %s"), _(DISPLAY_NAME));
 	urlgrabberwindow =
-		mg_create_generic_tab ("UrlGrabber", _(DISPLAY_NAME": URL Grabber"), FALSE,
-							 TRUE, url_closegui, NULL, 400, 256, &vbox, 0);
+		mg_create_generic_tab ("UrlGrabber", buf, FALSE, TRUE, url_closegui, NULL,
+							 400, 256, &vbox, 0);
 	gtkutil_destroy_on_esc (urlgrabberwindow);
 	view = url_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (urlgrabberwindow), "model",

@@ -43,252 +43,158 @@ struct defaultserver
 	char *host;
 	char *channel;
 	char *charset;
+	int loginmode;		/* default authentication type */
+	char *connectcmd;	/* default connect command - should only be used for rare login types, paired with LOGIN_CUSTOM */
+	gboolean ssl;
 };
 
 static const struct defaultserver def[] =
 {
 	{"2600net",	0},
+	/* Invalid hostname in cert */
 	{0,			"irc.2600.net"},
 
-/*	{"7-indonesia",	0},
-	{0,			"irc.7-indonesia.org"},*/
+	{"2ch", 0, 0, "iso-2022-jp", 0, 0},
+	{0,			"irc.2ch.sc"},
+	{0,			"irc.nurs.or.jp"},
+	{0,			"irc.juggler.jp"},
 
 	{"AccessIRC",	0},
+	/* Self signed */
 	{0,			"irc.accessirc.net"},
-	{0,			"eu.accessirc.net"},
 
-	{"AfterNET",	0},
+	{"AfterNET", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.afternet.org"},
-	{0,			"us.afternet.org"},
-	{0,			"eu.afternet.org"},
 
 	{"Aitvaras",	0},
-#ifdef USE_IPV6
-#ifdef USE_OPENSSL
-	{0,			"irc6.ktu.lt/+7668"},
-#endif
-	{0,			"irc6.ktu.lt/7666"},
-#endif
 #ifdef USE_OPENSSL
 	{0,			"irc.data.lt/+6668"},
-	{0,			"irc-ssl.omnitel.net/+6668"},
-	{0,			"irc-ssl.le.lt/+9999"},
+	{0,			"irc.omnitel.net/+6668"},
+	{0,			"irc.ktu.lt/+6668"},
+	{0,			"irc.kis.lt/+6668"},
+	{0,			"irc.vub.lt/+6668"},
 #endif
 	{0,			"irc.data.lt"},
 	{0,			"irc.omnitel.net"},
 	{0,			"irc.ktu.lt"},
-	{0,			"irc.le.lt"},
-	{0,			"irc.takas.lt"},
-	{0,			"irc.5ci.net"},
 	{0,			"irc.kis.lt"},
+	{0,			"irc.vub.lt"},
 
-	{"AlphaChat",	0},
-	{0,			"irc.alphachat.net"},
-	{0,			"na.alphachat.net"},
-	{0,			"eu.alphachat.net"},
-	{0,			"au.alphachat.net"},
-	{0,			"za.alphachat.net"},
-
-/*	{"AmigaNet",	0},
-	{0,			"irc.amiganet.org"},
-	{0,			"us.amiganet.org"},
-	{0,			"uk.amiganet.org"},
-	{0,			"no.amiganet.org"},
-	{0,			"au.amiganet.org"},*/
+	{"Anthrochat", 0, 0, 0, 0, 0, TRUE},
+	{0,			"irc.anthrochat.net"},
 
 	{"ARCNet",	0},
-	{0,			"se1.arcnet.vapor.com"},
-	{0,			"us1.arcnet.vapor.com"},
-	{0,			"us2.arcnet.vapor.com"},
-	{0,			"us3.arcnet.vapor.com"},
-	{0,			"ca1.arcnet.vapor.com"},
-	{0,			"de1.arcnet.vapor.com"},
-	{0,			"de3.arcnet.vapor.com"},
-	{0,			"ch1.arcnet.vapor.com"},
-	{0,			"be1.arcnet.vapor.com"},
-	{0,			"nl3.arcnet.vapor.com"},
-	{0,			"uk1.arcnet.vapor.com"},
-	{0,			"uk2.arcnet.vapor.com"},
-/*	{0,			"uk3.arcnet.vapor.com"},*/
-	{0,			"fr1.arcnet.vapor.com"},
-
-/*	{"AstroLink",	0},
-	{0,			"irc.astrolink.org"},*/
+	{0,			"arcnet-irc.org"},
 
 	{"AustNet",	0},
-	{0,			"au.austnet.org"},
-	{0,			"us.austnet.org"},
-	{0,			"ca.austnet.org"},
-
-/*	{"AxeNet",	0},
-	{0,			"irc.axenet.org"},
-	{0,			"angel.axenet.org"},
-	{0,			"energy.axenet.org"},
-	{0,			"python.axenet.org"},*/
+	{0,			"irc.austnet.org"},
 
 	{"AzzurraNet",	0},
 	{0,			"irc.azzurra.org"},
-	{0,			"crypto.azzurra.org"},
 
-	{"Beirut", 0},
-	{0,			"irc.beirut.com"},
+	{"BetaChat", 0, 0, 0, LOGIN_SASL},
+	{0,			"irc.betachat.net"},
+	{"BuddyIM", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.buddy.im"},
+	{"Canternet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.canternet.org"},
 
-	{"Chat4all", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.chat4all.org/+7001"},
-#endif
+	{"Chat4all", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.chat4all.org"},
+
+	{"ChatJunkies",	0},
+	{0,			"irc.chatjunkies.org"},
+
+	{"ChatNet",	0},
+	{0,			"irc.chatnet.org"},
+
+	{"ChatSpike", 0, 0, 0, LOGIN_SASL},
+	{0,			"irc.chatspike.net"},
 
 	{"ChattingAway", 0},
 	{0,			"irc.chattingaway.com"},
 
-	{"ChatJunkies",	0, "#xchat"},
-	{0,			"irc.chatjunkies.org"},
-	{0,			"nl.chatjunkies.org"},
-
-	{"ChatNet",	0},
-	{0,			"US.ChatNet.Org"},
-	{0,			"EU.ChatNet.Org"},
-
-/*	{"ChatSociety", 0},
-	{0,			"us.chatsociety.net"},
-	{0,			"eu.chatsociety.net"},*/
-
-	{"ChatSpike", 0},
-	{0,			"irc.chatspike.net"},
-
-/*	{"CoolChat",	0},
-	{0,			"irc.coolchat.net"},
-	{0,			"unix.coolchat.net"},
-	{0,			"toronto.coolchat.net"},*/
-
 	{"Criten", 0},
+	/* Self signed */
 	{0,			"irc.criten.net"},
-	{0,			"irc.eu.criten.net"},
 
-	{"DALnet",	0},
-	{0,			"irc.dal.net"},
-	{0,			"irc.eu.dal.net"},
+	{"DALnet", 0, 0, 0, LOGIN_NICKSERV},
+	/* Self signed */
+	{0,			"us.dal.net"},
+
+	{"DarkMyst", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.darkmyst.org"},
 
 	{"Dark-Tou-Net",	0},
 	{0,			"irc.d-t-net.de"},
-	{0,			"bw.d-t-net.de"},
-	{0,			"nc.d-t-net.de"},
-	{0,			"wakka.d-t-net.de"},
-
-	{"DarkMyst", 0},
-	{0,			"irc.darkmyst.org"},
-
-	{"DeepIRC", 0},
-	{0,			"irc.deepirc.net"},
 
 	{"DeltaAnime", 0},
 	{0,			"irc.deltaanime.net"},
 
 	{"EFnet",	0},
-	{0,			"irc.blackened.com"},
-	{0,			"irc.Prison.NET"},
-	{0,			"irc.Qeast.net"},
-	{0,			"irc.efnet.pl"},
-	{0,			"efnet.demon.co.uk"},
-/*	{0,			"irc.lagged.org"},*/
-	{0,			"irc.lightning.net"},
-	{0,			"irc.mindspring.com"},
-	{0,			"irc.easynews.com"},
-	{0,			"irc.servercentral.net"},
+	{0,			"irc.choopa.net"},
+	{0,			"irc.paraphysics.net"},
+	{0,			"efnet.port80.se"},
+	{0,			"irc.underworld.no"},
+	{0,			"irc.inet.tele.dk"},
+
+	{"ElectroCode", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.electrocode.net"},
 
 	{"EnterTheGame",	0},
-	{0,			"IRC.EnterTheGame.Com"},
+	{0,			"irc.enterthegame.com"},
 
-	{"EntropyNet",	0},
-#ifdef USE_OPENSSL
-	{0,			"irc.entropynet.net/+6697"},
-#endif
+	{"EntropyNet",	0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.entropynet.net"},
-#ifdef USE_IPV6
-#ifdef USE_OPENSSL
-	{0,			"irc6.entropynet.net/+6697"},
-#endif
-	{0,			"irc6.entropynet.net"},
-#endif
 
-	{"EsperNet",	0},
-#ifdef USE_OPENSSL
-	{0,			"irc.esper.net/+6697"},
-#endif
+	{"EsperNet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
 	{0,			"irc.esper.net"},
 
 	{"EUIrc",	0},
 	{0,			"irc.euirc.net"},
-	{0,			"irc.ham.de.euirc.net"},
-	{0,			"irc.ber.de.euirc.net"},
-	{0,			"irc.ffm.de.euirc.net"},
-	{0,			"irc.bre.de.euirc.net"},
-	{0,			"irc.hes.de.euirc.net"},
-	{0,			"irc.vie.at.euirc.net"},
-	{0,			"irc.inn.at.euirc.net"},
-	{0,			"irc.bas.ch.euirc.net"},
 
 	{"EuropNet", 0},
+	/* Self signed */
 	{0,			"irc.europnet.org"},
 
-/*	{"EU-IRC",	0},
-	{0,			"irc.eu-irc.net"},*/
-
 	{"FDFNet",	0},
+	/* Self signed */
 	{0,			"irc.fdfnet.net"},
-	{0,			"irc.eu.fdfnet.net"},
 
-	{"FEFNet",	0},
-	{0,			"irc.fef.net"},
-	{0,			"irc.ggn.net"},
-	{0,			"irc.vendetta.com"},
-
-	{"freenode",	0,	"#hexchat"},
-#ifdef USE_OPENSSL
-	{0,				"irc.freenode.net/+6697"},
-#endif
+	{"freenode", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,				"chat.freenode.net"},
+	/* irc. points to chat. but many users and urls still reference it */
 	{0,				"irc.freenode.net"},
 
-/*	{"Freeworld",	0},
-	{0,			"kabel.freeworld.nu"},
-	{0,			"irc.freeworld.nu"},*/
-
-	{"Fusion Latina",	0},
-	{0,					"irc.fusionlatina.org/2012"},
+	{"Furnet", 0, 0, 0, 0, 0, TRUE},
+	{0,			"irc.furnet.org"},
 
 	{"GalaxyNet",	0},
 	{0,			"irc.galaxynet.org"},
-/*	{0,			"sprynet.us.galaxynet.org"},
-	{0,			"atlanta.ga.us.galaxynet.org"},*/
 
-	{"GameSurge",	0},
+	{"GameSurge", 0},
 	{0,			"irc.gamesurge.net"},
 	
-/*	{"GamesNET",	0},
-	{0,				"irc.gamesnet.net"},
-	{0,				"irc.us.gamesnet.net"},
-	{0,				"east.us.gamesnet.net"},
-	{0,				"west.us.gamesnet.net"},
-	{0,				"irc.ca.gamesnet.net"},
-	{0,				"irc.eu.gamesnet.net"},*/
+	{"GeeksIRC", 0, 0, 0, LOGIN_SASL},
+	/* Self signed */
+	{0,			"irc.geeksirc.net"},
 
-	{"GeekShed",	0},
+	{"GeekShed", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.geekshed.net"},
 
-	{"German-Elite",	0},
-	{0,			"dominion.german-elite.net"},
-	{0,			"komatu.german-elite.net"},
-/*	{0,			"liberty.german-elite.net"},*/
+	{"German-Elite", 0, 0, "CP1252"},
+	{0,			"irc.german-elite.net"},
 
 	{"GIMPNet",		0},
+	/* Invalid hostname in cert */
 	{0,			"irc.gimp.org"},
 	{0,			"irc.gnome.org"},
-/*	{0,			"irc.au.gimp.org"},*/
-	{0,			"irc.us.gimp.org"},
 
-/*	{"HabberNet",	0},
-	{0,			"irc.habber.net"},*/
+	{"GlobalGamers", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.globalgamers.net/+6660"},
+#endif
+	{0,			"irc.globalgamers.net"},
 
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
@@ -296,122 +202,62 @@ static const struct defaultserver def[] =
 	{"IdleMonkeys", 0},
 	{0,			"irc.idlemonkeys.net"},
 
-	{"IndirectIRC", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.indirectirc.com/+6697"},
-#endif
+	{"IndirectIRC", 0, 0, 0, LOGIN_SASL},
+	/* Self signed */
 	{0,			"irc.indirectirc.com"},
+	
+	{"Interlinked", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.interlinked.me"},
 
-/*	{"Infinity-IRC",	0},
-	{0,			"Atlanta.GA.US.Infinity-IRC.Org"},
-	{0,			"Babylon.NY.US.Infinity-IRC.Org"},
-	{0,			"Sunshine.Ca.US.Infinity-IRC.Org"},
-	{0,			"IRC.Infinity-IRC.Org"},*/
+	{"IRC4Fun", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,				"irc.irc4fun.net"},
 
-	{"IRCHighWay",	0},
-#ifdef USE_OPENSSL
-	{0,				"irc.irchighway.net/+9999"},
-#endif
+	{"IRCHighWay", 0, 0, 0, 0, 0, TRUE},
 	{0,				"irc.irchighway.net"},
 
-	{"IrcLink",	0},
-	{0,			"irc.irclink.net"},
-	{0,			"Alesund.no.eu.irclink.net"},
-	{0,			"Oslo.no.eu.irclink.net"},
-	{0,			"frogn.no.eu.irclink.net"},
-	{0,			"tonsberg.no.eu.irclink.net"},
-
 	{"IRCNet",		0},
-	{0,				"irc.stealth.net/6668"},
-	{0,				"ircnet.demon.co.uk"},
-/*	{0,				"ircnet.hinet.hr"},*/
-	{0,				"irc.datacomm.ch"},
-/*	{0,				"ircnet.kaptech.fr"},
-	{0,				"ircnet.easynet.co.uk"},*/
-	{0,				"random.ircd.de"},
-	{0,				"ircnet.netvision.net.il"},
-/*	{0,				"irc.seed.net.tw"},*/
-	{0,				"irc.cs.hut.fi"},
+	{0,				"open.ircnet.net"},
 
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
 
-	{"IronDust", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.irondust.net/+6697"},
-#endif
-	{0,			"irc.irondust.net"},
+	{"iZ-smart.net", 0, 0, "CP1252"},
+	{0,			"irc.iz-smart.net"},
 
-	{"iZ-smart.net",	0},
-	{0,			"irc.iZ-smart.net/6666"},
-	{0,			"irc.iZ-smart.net/6667"},
-	{0,			"irc.iZ-smart.net/6668"},
+	{"KBFail", 0},
+	/* SSL is self-signed */
+	{0,			"irc.kbfail.net"},
 
 	{"Krstarica", 0},
 	{0,			"irc.krstarica.com"},
 
-	{"Librenet",	0},
-	{0,			"irc.librenet.net"},
-	{0,			"ielf.fr.librenet.net"},
+	{"LibraIRC", 0},
+	/* Self signed */
+	{0,			"irc.librairc.net"},
 
 #ifdef USE_OPENSSL
 	{"LinkNet",	0},
 	{0,			"irc.link-net.org/+7000"},
-	{0,			"as.link-net.org/+7000"},
-	{0,			"eu.link-net.org/+7000"},
-	{0,			"us.link-net.org/+7000"},
-#ifdef USE_IPV6
-	{0,			"irc6.link-net.org/+7000"},
-#endif
-/*	{0,			"irc.no.link-net.org"},
-	{0,			"irc.gamesden.net.au"},
-	{0,			"irc.bahnhof.se"},
-	{0,			"irc.kinexuseurope.co.uk"},
-	{0,			"irc.gamiix.com"},*/
 #endif
 
-/*	{"Majistic",	0},
-	{0,			"irc.majistic.net"},*/
-
-	{"MindForge",	0},
+	{"MindForge", 0, 0, 0, LOGIN_SASL},
 	{0,			"irc.mindforge.org"},
-
-/*	{"MintIRC",	0},
-	{0,			"irc.mintirc.net"},*/
 
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
 
-	{"Moznet",		0},
+	{"Moznet", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.mozilla.org"},
+	
+	{"ObsidianIRC",  0},
+	/* Self signed */
+	{0,      "irc.obsidianirc.net"}, 
 
-	{"NeverNET",	0},
-	{0,			"irc.nevernet.net"},
-	{0,			"imagine.nevernet.net"},
-	{0,			"dimension.nevernet.net"},
-	{0,			"universe.nevernet.net"},
-	{0,			"wayland.nevernet.net"},
-	{0,			"forte.nevernet.net"},
-
-	{"NixHelpNet",	0},
-	{0,			"irc.nixhelp.org"},
-	{0,			"us.nixhelp.org"},
-	{0,			"uk.nixhelp.org"},
-	{0,			"uk2.nixhelp.org"},
-	{0,			"uk3.nixhelp.org"},
-	{0,			"nl.nixhelp.org"},
-	{0,			"ca.ld.nixhelp.org"},
-	{0,			"us.co.nixhelp.org"},
-	{0,			"us.ca.nixhelp.org"},
-	{0,			"us.pa.nixhelp.org"},
-
-/*	{"NullusNet",	0},
-	{0,			"irc.nullus.net"},*/
-
-	{"Oceanius", 0},
+	{"Oceanius", 0, 0, 0, LOGIN_SASL},
+	/* Self signed */
 	{0,			"irc.oceanius.com"},
 
-	{"OFTC",	0},
+	{"OFTC", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.oftc.net"},
 
 	{"OtherNet",	0},
@@ -420,174 +266,115 @@ static const struct defaultserver def[] =
 	{"OzNet",	0},
 	{0,			"irc.oz.org"},
 
-	{"PIRC.PL",	0},
+	{"PIRC.PL",	0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.pirc.pl"},
+	
+	{"PonyChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.ponychat.net"},
 
-	{"PTNet.org",   0},
-	{0,			"irc.PTNet.org"},
-	{0,			"world.PTnet.org"},
-	{0,			"netvisao.PTnet.org"},
-	{0,			"uevora.PTnet.org"},
-	{0,			"vianetworks.PTnet.org"},
-	{0,			"uc.PTnet.org"},
-	{0,			"nfsi.ptnet.org"},
-	{0,			"fctunl.ptnet.org"},
+	{"PTNet.org",	0},
+	/* Note that the network suggests ISO-8859-1 but most users ignore this */
+	{0,			"uevora.ptnet.org"},
+	{0,			"vianetworks.ptnet.org"},
 
-	{"QuakeNet",	0},
+	{"QuakeNet", 0, 0, 0, LOGIN_CHALLENGEAUTH},
 	{0,			"irc.quakenet.org"},
-	{0,			"irc.se.quakenet.org"},
-	{0,			"irc.dk.quakenet.org"},
-	{0,			"irc.no.quakenet.org"},
-	{0,			"irc.fi.quakenet.org"},
-	{0,			"irc.be.quakenet.org"},
-	{0,			"irc.uk.quakenet.org"},
-	{0,			"irc.de.quakenet.org"},
-	{0,			"irc.it.quakenet.org"},
 
-/*	{"RebelChat",	0},
-	{0,			"irc.rebelchat.org"},*/
-
-/*	{"Recycled-IRC",  0},
-	{0,			"irc.recycled-irc.org"},
-	{0,			"vermin.recycled-irc.org"},
-	{0,			"waste.recycled-irc.org"},
-	{0,			"lumber.recycled-irc.org"},
-	{0,			"trash.recycled-irc.org"},
-	{0,			"unwashed.recycled-irc.org"},
-	{0,			"garbage.recycled-irc.org"},
-	{0,			"dustbin.recycled-irc.org"},*/
-
-/*	{"RizeNET", 0},
-	{0,			"irc.rizenet.org"},
-	{0,			"omega.rizenet.org"},
-	{0,			"evelance.rizenet.org"},
-	{0,			"lisa.rizenet.org"},
-	{0,			"scott.rizenet.org"},*/
-
-	{"Rizon", 0},
+	{"Rizon", 0, 0, 0, 0, 0, TRUE},
 	{0,			"irc.rizon.net"},
 
 	{"RusNet", 0, 0, "KOI8-R (Cyrillic)"},
+	/* Self signed */
 	{0,			"irc.tomsk.net"},
-	{0,			"irc.rinet.ru"},
 	{0,			"irc.run.net"},
 	{0,			"irc.ru"},
 	{0,			"irc.lucky.net"},
 
 	{"SceneNet",	0},
 	{0,			"irc.scene.org"},
-	{0,			"irc.eu.scene.org"},
-	{0,			"irc.us.scene.org"},
 
-	{"SeilEn.de",	0},
+	{"SeilEn.de", 0, 0, "CP1252"},
 	{0,			"irc.seilen.de"},
 
+	{"Serenity-IRC",	0},
+	{0,			"irc.serenity-irc.net"},
+
 	{"SlashNET",	0},
+	/* Self signed */
 	{0,			"irc.slashnet.org"},
-	{0,			"area51.slashnet.org"},
-	{0,			"moo.slashnet.org"},
-	{0,			"radon.slashnet.org"},
 
-	{"Snoonet", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.snoonet.org/+6697"},
-#endif
-	{0,			"irc.snoonet.org/6667"},
+	{"Snoonet", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.snoonet.org"},
 
-	{"Snyde", 0},
-	{0,			"irc.snyde.net/6667"},
-
-	{"Sohbet.Net", 0},
+	{"Sohbet.Net", 0, 0, "CP1254"},
 	{0,			"irc.sohbet.net"},
 
 	{"SolidIRC", 0},
+	/* Self signed */
 	{0,			"irc.solidirc.com"},
 
-	{"SorceryNet",	0},
-	{0,			"irc.sorcery.net/9000"},
-	{0,			"irc.us.sorcery.net/9000"},
-	{0,			"irc.eu.sorcery.net/9000"},
-
-/*	{"Spidernet",	0},
-	{0,			"us.spidernet.org"},
-	{0,			"eu.spidernet.org"},
-	{0,			"irc.spidernet.org"},*/
+	{"SorceryNet", 0, 0, 0, LOGIN_SASL},
+	/* Self signed */
+	{0,			"irc.sorcery.net"},
 	
-	{"SpotChat", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.spotchat.org/+6697"},
-#endif
-	{0,			"irc.spotchat.org/6667"},
+	{"SpotChat", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.spotchat.org"},
 
 	{"StarChat", 0},
 	{0,			"irc.starchat.net"},
-	{0,			"gainesville.starchat.net"},
-	{0,			"freebsd.starchat.net"},
-	{0,			"sunset.starchat.net"},
-	{0,			"revenge.starchat.net"},
-	{0,			"tahoma.starchat.net"},
-	{0,			"neo.starchat.net"},
 
 	{"Station51", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.station51.net/+6697"},
-#endif
+	/* Self signed */
 	{0,			"irc.station51.net"},
-	
+
+	{"StormBit", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.stormbit.net"},
+
 	{"SwiftIRC", 0},
-#ifdef USE_OPENSSL
-	{0,			"irc.swiftirc.net/+6697"},
-#endif
-	{0,			"irc.swiftirc.net/6667"},
+	/* Expired cert */
+	{0,			"irc.swiftirc.net"},
 
-/*	{"TNI3",			0},
-	{0,			"irc.tni3.com"},*/
+	{"synIRC", 0},
+	/* Self signed */
+	{0, "irc.synirc.net"},
 
-	{"TURLINet",			0},
-	{0,			"irc.turli.net"},
+	{"Techtronix",	0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.techtronix.net"},
+
+	{"TURLINet", 0, 0, 0, 0, 0, TRUE},
+	/* Other servers use CP1251 and invalid certs */
 	{0,			"irc.servx.ru"},
-	{0,			"irc.gavnos.ru"},
 
-	{"UnderNet",	0},
+	{"UnderNet", 0, 0, 0, LOGIN_CUSTOM, "MSG x@channels.undernet.org login %u %p"},
 	{0,			"us.undernet.org"},
-	{0,			"eu.undernet.org"},
 
-	{"UniBG",		0},
+	{"UniBG", 0, 0, "CP1251", LOGIN_CUSTOM, "MSG NS IDENTIFY %p"},
 	{0,			"irc.lirex.com"},
 	{0,			"irc.naturella.com"},
-	{0,			"irc.spnet.net"},
 	{0,			"irc.techno-link.com"},
-	{0,			"irc.telecoms.bg"},
-	{0,			"irc.tu-varna.edu"},
-
-	{"Whiffle",	0},
-	{0,			"irc.whiffle.org"},
 
 	{"Worldnet",		0},
 	{0,			"irc.worldnet.net"},
-	{0,			"irc.fr.worldnet.net"},
 
-	{"Windfyre",		0},
-#ifdef USE_OPENSSL
-	{0,			"irc.windfyre.net/+6697"},
-#endif
-	{0,			"irc.windfyre.net"},
-
-/*	{"Xentonix.net",	0},
-	{0,			"irc.xentonix.net"},*/
-
-/*	{"XWorld",	0},
-	{0,			"Buffalo.NY.US.XWorld.org"},
-	{0,			"Minneapolis.MN.US.Xworld.Org"},
-	{0,			"Rochester.NY.US.XWorld.org"},
-	{0,			"Bayern.DE.EU.XWorld.Org"},
-	{0,			"Chicago.IL.US.XWorld.Org"},*/
+	{"Xertion", 0, 0, 0, LOGIN_SASL, 0, TRUE},
+	{0,			"irc.xertion.org"},
 
 	{0,0}
 };
 
 GSList *network_list = 0;
 
+favchannel *
+servlist_favchan_copy (favchannel *fav)
+{
+	favchannel *newfav;
+
+	newfav = g_new (favchannel, 1);
+	newfav->name = g_strdup (fav->name);
+	newfav->key = g_strdup (fav->key);		/* g_strdup() can handle NULLs so no need to check it */
+
+	return newfav;
+}
 
 void
 servlist_connect (session *sess, ircnet *net, gboolean join)
@@ -610,42 +397,37 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		return;
 	ircserv = list->data;
 
-	/* incase a protocol switch is added to the servlist gui */
+	/* in case a protocol switch is added to the servlist gui */
 	server_fill_her_up (sess->server);
 
 	if (join)
 	{
 		sess->willjoinchannel[0] = 0;
 
-		if (net->autojoin)
+		if (net->favchanlist)
 		{
-			if (serv->autojoin)
-				free (serv->autojoin);
-			serv->autojoin = strdup (net->autojoin);
+			if (serv->favlist)
+			{
+				g_slist_free_full (serv->favlist, (GDestroyNotify) servlist_favchan_free);
+			}
+			serv->favlist = g_slist_copy_deep (net->favchanlist, (GCopyFunc) servlist_favchan_copy, NULL);
 		}
 	}
 
+	if (net->logintype)
+	{
+		serv->loginmethod = net->logintype;
+	}
+	else
+	{
+		serv->loginmethod = LOGIN_DEFAULT_REAL;
+	}
+
 	serv->password[0] = 0;
-	serv->sasluser[0] = 0;
-	serv->saslpassword[0] = 0;
 
 	if (net->pass)
 	{
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
-	}
-
-	if (net->flags & FLAG_USE_GLOBAL || net->user == NULL)
-	{
-		strcpy (serv->sasluser, prefs.hex_irc_user_name);
-	}
-	else
-	{
-		safe_strcpy (serv->sasluser, net->user, sizeof (serv->sasluser));
-	}
-
-	if (net->saslpass)
-	{
-		safe_strcpy (serv->saslpassword, net->saslpass, sizeof (serv->saslpassword));
 	}
 
 	if (net->flags & FLAG_USE_GLOBAL)
@@ -818,8 +600,65 @@ servlist_server_find (ircnet *net, char *name, int *pos)
 		if (strcmp (serv->hostname, name) == 0)
 		{
 			if (pos)
+			{
 				*pos = i;
+			}
 			return serv;
+		}
+		i++;
+		list = list->next;
+	}
+
+	return NULL;
+}
+
+favchannel *
+servlist_favchan_find (ircnet *net, char *channel, int *pos)
+{
+	GSList *list;
+	favchannel *favchan;
+	int i = 0;
+
+	if (net == NULL)
+		return NULL;
+
+	list = net->favchanlist;
+
+	while (list)
+	{
+		favchan = list->data;
+		if (g_ascii_strcasecmp (favchan->name, channel) == 0)
+		{
+			if (pos)
+			{
+				*pos = i;
+			}
+			return favchan;
+		}
+		i++;
+		list = list->next;
+	}
+
+	return NULL;
+}
+
+commandentry *
+servlist_command_find (ircnet *net, char *cmd, int *pos)
+{
+	GSList *list = net->commandlist;
+	commandentry *entry;
+	int i = 0;
+
+	while (list)
+	{
+		entry = list->data;
+		if (strcmp (entry->command, cmd) == 0)
+		{
+			if (pos)
+			{
+				*pos = i;
+			}
+			return entry;
 		}
 		i++;
 		list = list->next;
@@ -846,8 +685,19 @@ servlist_net_find_from_server (char *server_name)
 		slist = net->servlist;
 		while (slist)
 		{
+			gsize hostname_len;
+			const char *hostname, *p;
+
 			serv = slist->data;
-			if (g_ascii_strcasecmp (serv->hostname, server_name) == 0)
+			hostname = serv->hostname;
+
+			/* Ignore port when comparing */
+			if ((p = strchr (hostname, '/')))
+				hostname_len = p - hostname;
+			else
+				hostname_len = strlen (hostname);
+
+			if (g_ascii_strncasecmp (hostname, server_name, hostname_len) == 0)
 				return net;
 			slist = slist->next;
 		}
@@ -886,20 +736,70 @@ servlist_server_add (ircnet *net, char *name)
 {
 	ircserver *serv;
 
-	serv = malloc (sizeof (ircserver));
-	memset (serv, 0, sizeof (ircserver));
-	serv->hostname = strdup (name);
+	serv = g_new (ircserver, 1);
+	serv->hostname = g_strdup (name);
 
 	net->servlist = g_slist_append (net->servlist, serv);
 
 	return serv;
 }
 
+commandentry *
+servlist_command_add (ircnet *net, char *cmd)
+{
+	commandentry *entry;
+
+	entry = g_new (commandentry, 1);
+	entry->command = g_strdup (cmd);
+
+	net->commandlist = g_slist_append (net->commandlist, entry);
+
+	return entry;
+}
+
+GSList *
+servlist_favchan_listadd (GSList *chanlist, char *channel, char *key)
+{
+	favchannel *chan;
+
+	chan = g_new (favchannel, 1);
+	chan->name = g_strdup (channel);
+	chan->key = g_strdup (key);
+	chanlist = g_slist_append (chanlist, chan);
+
+	return chanlist;
+}
+
+void
+servlist_favchan_add (ircnet *net, char *channel)
+{
+	int pos;
+	char *name;
+	char *key;
+
+	if (strchr (channel, ',') != NULL)
+	{
+		pos = (int) (strchr (channel, ',') - channel);
+		name = g_strndup (channel, pos);
+		key = g_strdup (channel + pos + 1);
+	}
+	else
+	{
+		name = g_strdup (channel);
+		key = NULL;
+	}
+
+	net->favchanlist = servlist_favchan_listadd (net->favchanlist, name, key);
+
+	g_free (name);
+	g_free (key);
+}
+
 void
 servlist_server_remove (ircnet *net, ircserver *serv)
 {
-	free (serv->hostname);
-	free (serv);
+	g_free (serv->hostname);
+	g_free (serv);
 	net->servlist = g_slist_remove (net->servlist, serv);
 }
 
@@ -915,6 +815,35 @@ servlist_server_remove_all (ircnet *net)
 	}
 }
 
+void
+servlist_command_free (commandentry *entry)
+{
+	g_free (entry->command);
+	g_free (entry);
+}
+
+void
+servlist_command_remove (ircnet *net, commandentry *entry)
+{
+	servlist_command_free (entry);
+	net->commandlist = g_slist_remove (net->commandlist, entry);
+}
+
+void
+servlist_favchan_free (favchannel *channel)
+{
+	g_free (channel->name);
+	g_free (channel->key);
+	g_free (channel);
+}
+
+void
+servlist_favchan_remove (ircnet *net, favchannel *channel)
+{
+	servlist_favchan_free (channel);
+	net->favchanlist = g_slist_remove (net->favchanlist, channel);
+}
+
 static void
 free_and_clear (char *str)
 {
@@ -923,7 +852,7 @@ free_and_clear (char *str)
 		char *orig = str;
 		while (*str)
 			*str++ = 0;
-		free (orig);
+		g_free (orig);
 	}
 }
 
@@ -939,8 +868,6 @@ servlist_cleanup (void)
 	{
 		net = list->data;
 		free_and_clear (net->pass);
-		free_and_clear (net->saslpass);
-		free_and_clear (net->nickserv);
 	}
 }
 
@@ -953,27 +880,18 @@ servlist_net_remove (ircnet *net)
 	servlist_server_remove_all (net);
 	network_list = g_slist_remove (network_list, net);
 
-	if (net->nick)
-		free (net->nick);
-	if (net->nick2)
-		free (net->nick2);
-	if (net->user)
-		free (net->user);
-	if (net->real)
-		free (net->real);
+	g_free (net->nick);
+	g_free (net->nick2);
+	g_free (net->user);
+	g_free (net->real);
 	free_and_clear (net->pass);
-	free_and_clear (net->saslpass);
-	if (net->autojoin)
-		free (net->autojoin);
-	if (net->command)
-		free (net->command);
-	free_and_clear (net->nickserv);
-	if (net->comment)
-		free (net->comment);
-	if (net->encoding)
-		free (net->encoding);
-	free (net->name);
-	free (net);
+	if (net->favchanlist)
+		g_slist_free_full (net->favchanlist, (GDestroyNotify) servlist_favchan_free);
+	if (net->commandlist)
+		g_slist_free_full (net->commandlist, (GDestroyNotify) servlist_command_free);
+	g_free (net->encoding);
+	g_free (net->name);
+	g_free (net);
 
 	/* for safety */
 	list = serv_list;
@@ -981,7 +899,9 @@ servlist_net_remove (ircnet *net)
 	{
 		serv = list->data;
 		if (serv->network == net)
+		{
 			serv->network = NULL;
+		}
 		list = list->next;
 	}
 }
@@ -991,10 +911,8 @@ servlist_net_add (char *name, char *comment, int prepend)
 {
 	ircnet *net;
 
-	net = malloc (sizeof (ircnet));
-	memset (net, 0, sizeof (ircnet));
-	net->name = strdup (name);
-/*	net->comment = strdup (comment);*/
+	net = g_new0 (ircnet, 1);
+	net->name = g_strdup (name);
 	net->flags = FLAG_CYCLE | FLAG_USE_GLOBAL | FLAG_USE_PROXY;
 
 	if (prepend)
@@ -1017,20 +935,36 @@ servlist_load_defaults (void)
 		if (def[i].network)
 		{
 			net = servlist_net_add (def[i].network, def[i].host, FALSE);
-			net->encoding = strdup (IRC_DEFAULT_CHARSET);
 			if (def[i].channel)
 			{
-				net->autojoin = strdup (def[i].channel);
+				servlist_favchan_add (net, def[i].channel);
 			}
 			if (def[i].charset)
 			{
-				free (net->encoding);
-				net->encoding = strdup (def[i].charset);
+				net->encoding = g_strdup (def[i].charset);
 			}
+			else
+			{
+				net->encoding = g_strdup (IRC_DEFAULT_CHARSET);
+			}
+			if (def[i].loginmode)
+			{
+				net->logintype = def[i].loginmode;
+			}
+			if (def[i].connectcmd)
+			{
+				servlist_command_add (net, def[i].connectcmd);
+			}
+			if (def[i].ssl)
+			{
+				net->flags |= FLAG_USE_SSL;
+			}
+
 			if (g_str_hash (def[i].network) == def_hash)
 			{
 				prefs.hex_gui_slist_select = j;
 			}
+
 			j++;
 		}
 		else
@@ -1051,7 +985,6 @@ servlist_load (void)
 	FILE *fp;
 	char buf[2048];
 	int len;
-	char *tmp;
 	ircnet *net = NULL;
 
 	/* simple migration we will keep for a short while */
@@ -1073,6 +1006,8 @@ servlist_load (void)
 	while (fgets (buf, sizeof (buf) - 2, fp))
 	{
 		len = strlen (buf);
+		if (!len)
+			continue;
 		buf[len] = 0;
 		buf[len-1] = 0;	/* remove the trailing \n */
 		if (net)
@@ -1080,54 +1015,69 @@ servlist_load (void)
 			switch (buf[0])
 			{
 			case 'I':
-				net->nick = strdup (buf + 2);
+				net->nick = g_strdup (buf + 2);
 				break;
 			case 'i':
-				net->nick2 = strdup (buf + 2);
+				net->nick2 = g_strdup (buf + 2);
 				break;
 			case 'U':
-				net->user = strdup (buf + 2);
+				net->user = g_strdup (buf + 2);
 				break;
 			case 'R':
-				net->real = strdup (buf + 2);
+				net->real = g_strdup (buf + 2);
 				break;
 			case 'P':
-				net->pass = strdup (buf + 2);
+				net->pass = g_strdup (buf + 2);
 				break;
-			case 'A':
-				net->saslpass = strdup (buf + 2);
+			case 'L':
+				net->logintype = atoi (buf + 2);
 				break;
-			case 'J':
-				net->autojoin = strdup (buf + 2);
-				break;
-			case 'C':
-				if (net->command)
-				{
-					/* concat extra commands with a \n separator */
-					tmp = net->command;
-					net->command = malloc (strlen (tmp) + strlen (buf + 2) + 2);
-					strcpy (net->command, tmp);
-					strcat (net->command, "\n");
-					strcat (net->command, buf + 2);
-					free (tmp);
-				} else
-					net->command = strdup (buf + 2);
+			case 'E':
+				net->encoding = servlist_check_encoding (buf + 2) ? g_strdup (buf + 2) : g_strdup ("UTF-8");
 				break;
 			case 'F':
 				net->flags = atoi (buf + 2);
 				break;
-			case 'D':
-				net->selected = atoi (buf + 2);
-				break;
-			case 'E':
-				net->encoding = strdup (buf + 2);
-				break;
 			case 'S':	/* new server/hostname for this network */
 				servlist_server_add (net, buf + 2);
 				break;
-			case 'B':
-				net->nickserv = strdup (buf + 2);
+			case 'C':
+				servlist_command_add (net, buf + 2);
 				break;
+			case 'J':
+				servlist_favchan_add (net, buf + 2);
+				break;
+			case 'D':
+				net->selected = atoi (buf + 2);
+				break;
+			/* FIXME Migration code. In 2.9.5 the order was:
+			 *
+			 * P=serverpass, A=saslpass, B=nickservpass
+			 *
+			 * So if server password was unset, we can safely use SASL
+			 * password for our new universal password, or if that's also
+			 * unset, use NickServ password.
+			 *
+			 * Should be removed at some point.
+			 */
+			case 'A':
+				if (!net->pass)
+				{
+					net->pass = g_strdup (buf + 2);
+					if (!net->logintype)
+					{
+						net->logintype = LOGIN_SASL;
+					}
+				}
+			case 'B':
+				if (!net->pass)
+				{
+					net->pass = g_strdup (buf + 2);
+					if (!net->logintype)
+					{
+						net->logintype = LOGIN_NICKSERV;
+					}
+				}
 			}
 		}
 		if (buf[0] == 'N')
@@ -1157,13 +1107,6 @@ servlist_check_encoding (char *charset)
 	if (c)
 		c[0] = 0;
 
-	if (!g_ascii_strcasecmp (charset, "IRC")) /* special case */
-	{
-		if (c)
-			c[0] = ' ';
-		return TRUE;
-	}
-
 	gic = g_iconv_open (charset, "UTF-8");
 
 	if (c)
@@ -1178,13 +1121,6 @@ servlist_check_encoding (char *charset)
 	return FALSE;
 }
 
-static int
-servlist_write_ccmd (char *str, void *fp)
-{
-	return fprintf (fp, "C=%s\n", (str[0] == '/') ? str + 1 : str);
-}
-
-
 int
 servlist_save (void)
 {
@@ -1192,12 +1128,16 @@ servlist_save (void)
 	char *buf;
 	ircnet *net;
 	ircserver *serv;
+	commandentry *cmd;
+	favchannel *favchan;
 	GSList *list;
-	GSList *hlist;
+	GSList *netlist;
+	GSList *cmdlist;
+	GSList *favlist;
 #ifndef WIN32
 	int first = FALSE;
 
-	buf = g_strdup_printf ("%s/servlist.conf", get_xdir ());
+	buf = g_build_filename (get_xdir (), "servlist.conf", NULL);
 	if (g_access (buf, F_OK) != 0)
 		first = TRUE;
 #endif
@@ -1235,14 +1175,9 @@ servlist_save (void)
 			fprintf (fp, "R=%s\n", net->real);
 		if (net->pass)
 			fprintf (fp, "P=%s\n", net->pass);
-		if (net->saslpass)
-			fprintf (fp, "A=%s\n", net->saslpass);
-		if (net->autojoin)
-			fprintf (fp, "J=%s\n", net->autojoin);
-		if (net->nickserv)
-			fprintf (fp, "B=%s\n", net->nickserv);
-		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&
-			 g_ascii_strcasecmp (net->encoding, "System default"))
+		if (net->logintype)
+			fprintf (fp, "L=%d\n", net->logintype);
+		if (net->encoding)
 		{
 			fprintf (fp, "E=%s\n", net->encoding);
 			if (!servlist_check_encoding (net->encoding))
@@ -1254,17 +1189,39 @@ servlist_save (void)
 			}
 		}
 
-		if (net->command)
-			token_foreach (net->command, '\n', servlist_write_ccmd, fp);
-
 		fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);
 
-		hlist = net->servlist;
-		while (hlist)
+		netlist = net->servlist;
+		while (netlist)
 		{
-			serv = hlist->data;
+			serv = netlist->data;
 			fprintf (fp, "S=%s\n", serv->hostname);
-			hlist = hlist->next;
+			netlist = netlist->next;
+		}
+
+		cmdlist = net->commandlist;
+		while (cmdlist)
+		{
+			cmd = cmdlist->data;
+			fprintf (fp, "C=%s\n", cmd->command);
+			cmdlist = cmdlist->next;
+		}
+
+		favlist = net->favchanlist;
+		while (favlist)
+		{
+			favchan = favlist->data;
+
+			if (favchan->key)
+			{
+				fprintf (fp, "J=%s,%s\n", favchan->name, favchan->key);
+			}
+			else
+			{
+				fprintf (fp, "J=%s\n", favchan->name);
+			}
+
+			favlist = favlist->next;
 		}
 
 		if (fprintf (fp, "\n") < 1)
@@ -1280,162 +1237,33 @@ servlist_save (void)
 	return TRUE;
 }
 
-static void
-joinlist_free1 (GSList *list)
+static int
+joinlist_find_chan (favchannel *curr_item, const char *channel)
 {
-	GSList *head = list;
-
-	for (; list; list = list->next)
-		g_free (list->data);
-	g_slist_free (head);
-}
-
-void
-joinlist_free (GSList *channels, GSList *keys)
-{
-	joinlist_free1 (channels);
-	joinlist_free1 (keys);
+	if (!g_ascii_strcasecmp (curr_item->name, channel))
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
 
 gboolean
 joinlist_is_in_list (server *serv, char *channel)
 {
-	GSList *channels, *keys;
-	GSList *list;
-
-	if (!serv->network || !((ircnet *)serv->network)->autojoin)
+	if (!serv->network || !((ircnet *)serv->network)->favchanlist)
+	{
 		return FALSE;
-
-	joinlist_split (((ircnet *)serv->network)->autojoin, &channels, &keys);
-
-	for (list = channels; list; list = list->next)
-	{
-		if (serv->p_cmp (list->data, channel) == 0)
-			return TRUE;
 	}
 
-	joinlist_free (channels, keys);
-
-	return FALSE;
+	if (g_slist_find_custom (((ircnet *)serv->network)->favchanlist, channel, (GCompareFunc) joinlist_find_chan))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
-
-gchar *
-joinlist_merge (GSList *channels, GSList *keys)
-{
-	GString *out = g_string_new (NULL);
-	GSList *list;
-	int i, j;
-
-	for (; channels; channels = channels->next)
-	{
-		g_string_append (out, channels->data);
-
-		if (channels->next)
-			g_string_append_c (out, ',');
-	}
-
-	/* count number of REAL keys */
-	for (i = 0, list = keys; list; list = list->next)
-		if (list->data)
-			i++;
-
-	if (i > 0)
-	{
-		g_string_append_c (out, ' ');
-
-		for (j = 0; keys; keys = keys->next)
-		{
-			if (keys->data)
-			{
-				g_string_append (out, keys->data);
-				j++;
-				if (j == i)
-					break;
-			}
-
-			if (keys->next)
-				g_string_append_c (out, ',');
-		}
-	}
-
-	return g_string_free (out, FALSE);
-}
-
-void
-joinlist_split (char *autojoin, GSList **channels, GSList **keys)
-{
-	char *parta, *partb;
-	char *chan, *key;
-	int len;
-
-	*channels = NULL;
-	*keys = NULL;
-
-	/* after the first space, the keys begin */
-	parta = autojoin;
-	partb = strchr (autojoin, ' ');
-	if (partb)
-		partb++;
-
-	while (1)
-	{
-		chan = parta;
-		key = partb;
-
-		if (1)
-		{
-			while (parta[0] != 0 && parta[0] != ',' && parta[0] != ' ')
-			{
-				parta++;
-			}
-		}
-
-		if (partb)
-		{
-			while (partb[0] != 0 && partb[0] != ',' && partb[0] != ' ')
-			{
-				partb++;
-			}
-		}
-
-		len = parta - chan;
-		if (len < 1)
-			break;
-		*channels = g_slist_append (*channels, g_strndup (chan, len));
-
-		len = partb - key;
-		*keys = g_slist_append (*keys, len ? g_strndup (key, len) : NULL);
-
-		if (parta[0] == ' ' || parta[0] == 0)
-			break;
-		parta++;
-
-		if (partb)
-		{
-			if (partb[0] == 0 || partb[0] == ' ')
-				partb = NULL;	/* no more keys, but maybe more channels? */
-			else
-				partb++;
-		}
-	}
-
-#if 0
-	GSList *lista, *listb;
-	int i;
-
-	printf("-----\n");
-	i = 0;
-	lista = *channels;
-	listb = *keys;
-	while (lista)
-	{
-		printf("%d. |%s| |%s|\n", i, lista->data, listb->data);
-		i++;
-		lista = lista->next;
-		listb = listb->next;
-	}
-	printf("-----\n\n");
-#endif
-}
-
-

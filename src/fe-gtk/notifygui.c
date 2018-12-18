@@ -60,6 +60,7 @@ static void
 notify_closegui (void)
 {
 	notify_window = 0;
+	notify_save ();
 }
 
 /* Need this to be able to set the foreground colour property of a row
@@ -144,7 +145,7 @@ notify_gui_update (void)
 	GSList *list = notify_list;
 	GSList *slist;
 	gchar *name, *status, *server, *seen;
-	int online, servcount;
+	int online, servcount, lastseenminutes;
 	time_t lastseen;
 	char agobuf[128];
 
@@ -187,7 +188,13 @@ notify_gui_update (void)
 				seen = _("Never");
 			else
 			{
-				snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
+				lastseenminutes = (int)(time (0) - lastseen) / 60;
+				if (lastseenminutes < 60) 
+					g_snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), lastseenminutes);
+				else if (lastseenminutes < 120)
+					g_snprintf (agobuf, sizeof (agobuf), _("An hour ago"));
+				else
+					g_snprintf (agobuf, sizeof (agobuf), _("%d hours ago"), lastseenminutes / 60);
 				seen = agobuf;
 			}
 			if (!valid)	/* create new tree row if required */
@@ -212,7 +219,7 @@ notify_gui_update (void)
 						name = "";
 					server = server_get_network (servnot->server, TRUE);
 
-					snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
+					g_snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
 					seen = agobuf;
 
 					if (!valid)	/* create new tree row if required */
@@ -239,6 +246,8 @@ notify_gui_update (void)
                                       &iter);
 		gtk_list_store_remove (store, &old);
 	}
+
+	notify_row_cb (gtk_tree_view_get_selection (view), view);
 }
 
 static void
@@ -304,10 +313,10 @@ notifygui_add_cb (GtkDialog *dialog, gint response, gpointer entry)
 	char *networks;
 	char *text;
 
-	text = GTK_ENTRY (entry)->text;
+	text = (char *)gtk_entry_get_text (GTK_ENTRY (entry));
 	if (text[0] && response == GTK_RESPONSE_ACCEPT)
 	{
-		networks = GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net"))->text;
+		networks = (char*)gtk_entry_get_text (GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net")));
 		if (g_ascii_strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
 			notify_adduser (text, NULL);
 		else
@@ -346,7 +355,7 @@ fe_notify_ask (char *nick, char *networks)
 	gtk_container_set_border_width (GTK_CONTAINER (table), 12);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 3);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 8);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+	gtk_container_add (GTK_CONTAINER (gtk_dialog_get_content_area (GTK_DIALOG (dialog))), table);
 
 	label = gtk_label_new (msg);
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1);
@@ -371,7 +380,7 @@ fe_notify_ask (char *nick, char *networks)
 	gtk_table_attach_defaults (GTK_TABLE (table), wid, 1, 2, 2, 3);
 
 	label = gtk_label_new (NULL);
-	snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", _("Comma separated list of networks is accepted."));
+	g_snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", _("Comma separated list of networks is accepted."));
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 3, 4);
 
@@ -389,6 +398,7 @@ notify_opengui (void)
 {
 	GtkWidget *vbox, *bbox;
 	GtkWidget *view;
+	char buf[128];
 
 	if (notify_window)
 	{
@@ -396,9 +406,10 @@ notify_opengui (void)
 		return;
 	}
 
+	g_snprintf(buf, sizeof(buf), _("Friends List - %s"), _(DISPLAY_NAME));
 	notify_window =
-		mg_create_generic_tab ("Notify", _(DISPLAY_NAME": Friends List"), FALSE, TRUE,
-		                       notify_closegui, NULL, 400, 250, &vbox, 0);
+		mg_create_generic_tab ("Notify", buf, FALSE, TRUE, notify_closegui, NULL, 400,
+								250, &vbox, 0);
 	gtkutil_destroy_on_esc (notify_window);
 
 	view = notify_treeview_new (vbox);

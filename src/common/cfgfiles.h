@@ -24,25 +24,33 @@
 
 #include "hexchat.h"
 
+#define LANGUAGES_LENGTH 53
+
 extern char *xdir;
+extern const char * const languages[LANGUAGES_LENGTH];
 
 char *cfg_get_str (char *cfg, const char *var, char *dest, int dest_len);
 int cfg_get_bool (char *var);
 int cfg_get_int_with_result (char *cfg, char *var, int *result);
 int cfg_get_int (char *cfg, char *var);
 int cfg_put_int (int fh, int value, char *var);
-int cfg_get_color (char *cfg, char *var, int *r, int *g, int *b);
-int cfg_put_color (int fh, int r, int g, int b, char *var);
+int cfg_get_color (char *cfg, char *var, guint16 *r, guint16 *g, guint16 *b);
+int cfg_put_color (int fh, guint16 r, guint16 g, guint16 b, char *var);
 char *get_xdir (void);
-void load_config (void);
+int check_config_dir (void);
+void load_default_config (void);
+int make_config_dirs (void);
+int make_dcc_dirs (void);
+int load_config (void);
 int save_config (void);
 void list_free (GSList ** list);
 void list_loadconf (char *file, GSList ** list, char *defaultconf);
 int list_delentry (GSList ** list, char *name);
 void list_addentry (GSList ** list, char *cmd, char *name);
 int cmd_set (session *sess, char *tbuf, char *word[], char *word_eol[]);
-int hexchat_open_file (char *file, int flags, int mode, int xof_flags);
+int hexchat_open_file (const char *file, int flags, int mode, int xof_flags);
 FILE *hexchat_fopen_file (const char *file, const char *mode, int xof_flags);
+
 #define XOF_DOMODE 1
 #define XOF_FULLPATH 2
 
@@ -63,6 +71,11 @@ struct prefs
 	unsigned short offset;
 	unsigned short len;
 	unsigned short type;
+	/*
+	 * an optional function which will be called after the preference value has
+	 * been updated.
+	 */
+	void (*after_update)(void);
 };
 
 #define TYPE_STR 0
