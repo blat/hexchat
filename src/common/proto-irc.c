@@ -60,8 +60,8 @@ irc_login (server *serv, char *user, char *realname)
 
 	tcp_sendf (serv,
 				  "NICK %s\r\n"
-				  "USER %s %s %s :%s\r\n",
-				  serv->nick, user, user, serv->servername, realname);
+				  "USER %s 0 * :%s\r\n",
+				  serv->nick, user, realname);
 }
 
 static void
@@ -714,7 +714,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 333:
-		inbound_topictime (serv, word[4], word[5], atol (word[6]), tags_data);
+		inbound_topictime (serv, word[4], word[5], atol (STRIP_COLON(word, word_eol, 6)), tags_data);
 		break;
 
 #if 0
@@ -726,7 +726,7 @@ process_numeric (session * sess, int n,
 #endif
 
 	case 341:						  /* INVITE ACK */
-		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], word[5],
+		EMIT_SIGNAL_TIMESTAMP (XP_TE_UINVITE, sess, word[4], STRIP_COLON(word, word_eol, 5),
 									  serv->servername, NULL, 0, tags_data->timestamp);
 		break;
 
@@ -957,6 +957,7 @@ process_numeric (session * sess, int n,
 		EMIT_SIGNAL_TIMESTAMP (XP_TE_SASLRESPONSE, serv->server_session, word[1],
 									  word[2], word[3], ++word_eol[4], 0,
 									  tags_data->timestamp);
+		serv->waiting_on_sasl = FALSE;
 		if (!serv->sent_capend)
 		{
 			serv->sent_capend = TRUE;
@@ -1142,7 +1143,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 		{
 
 		case WORDL('A','C','C','O'):
-			inbound_account (serv, nick, word[3], tags_data);
+			inbound_account (serv, nick, STRIP_COLON(word, word_eol, 3), tags_data);
 			return;
 
 		case WORDL('A', 'U', 'T', 'H'):
@@ -1150,7 +1151,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 			return;
 
 		case WORDL('C', 'H', 'G', 'H'):
-			inbound_user_info (sess, NULL, word[3], word[4], NULL, nick, NULL,
+			inbound_user_info (sess, NULL, word[3], STRIP_COLON(word, word_eol, 4), NULL, nick, NULL,
 							   NULL, 0xff, tags_data);
 			return;
 
@@ -1330,7 +1331,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[],
 				}
 				else if (strncasecmp (word[4], "NAK", 3) == 0)
 				{
-					inbound_cap_nak (serv, tags_data);
+					inbound_cap_nak (serv, word[5][0] == ':' ? word_eol[5] + 1 : word_eol[5], tags_data);
 				}
 				else if (strncasecmp (word[4], "LIST", 4) == 0)	
 				{

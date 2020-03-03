@@ -1,5 +1,5 @@
 project('hexchat', 'c',
-  version: '2.14.2',
+  version: '2.14.3',
   meson_version: '>= 0.40.0',
   default_options: [
     'c_std=gnu89',
@@ -91,8 +91,6 @@ endif
 
 global_cflags = []
 test_cflags = [
-  '-pipe',
-  '-fPIE',
   '-funsigned-char',
   '-Wno-conversion',
   '-Wno-pointer-sign',
